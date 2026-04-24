@@ -3489,7 +3489,13 @@ def handle_resume_continue(
 def handle_resume_start_over(
     n_clicks: Optional[int],
 ) -> tuple:
-    """Reset all in-memory stores and trigger the clean-storage-flag to wipe localStorage."""
+    """Reset game-flow stores, while keeping persisted form inputs.
+
+    We intentionally do NOT wipe ``window.localStorage`` here. The startup form
+    uses Dash component persistence (localStorage) so users don't have to
+    re-enter demographics/checkboxes when restarting. Clearing the app stores
+    via Outputs below is sufficient to reset the game state.
+    """
     if not n_clicks:
         raise PreventUpdate
     with start_action(action_type=u"resume_start_over") as action:
@@ -3510,7 +3516,7 @@ def handle_resume_start_over(
         True,                      # is-example-data
         'example.csv',             # data-source-name
         None,                      # initial-slider-value
-        True,                      # clean-storage-flag (self-resets via clientside callback)
+        False,                     # clean-storage-flag (do not clear localStorage)
         True,                      # session-active (user made a choice in this tab)
     )
 

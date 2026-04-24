@@ -7,7 +7,8 @@ from sugar_sugar.i18n import t
 def _get_dropdown_items(navbar: NavBar) -> list:
     """Extract language items from the dropdown menu inside the navbar."""
     right_menu = navbar.children[-1]
-    dropdown = right_menu.children[0]
+    # Right menu contains: dark mode toggle, language dropdown
+    dropdown = right_menu.children[1]
     menu_div = dropdown.children[3]
     return menu_div.children
 
@@ -38,8 +39,8 @@ def test_navbar_fomantic_menu_structure():
 
     # right menu contains the language dropdown
     assert "right menu" in right_menu.className
-    assert len(right_menu.children) == 1
-    assert "dropdown" in right_menu.children[0].className
+    assert len(right_menu.children) == 2
+    assert "dropdown" in right_menu.children[1].className
 
 
 def test_navbar_game_always_visible():
@@ -82,7 +83,7 @@ def test_navbar_dropdown_trigger_shows_active_language():
     """Dropdown trigger displays the flag and label of the active language."""
     navbar = NavBar(locale="fr", current_page="/")
     right_menu = navbar.children[-1]
-    dropdown = right_menu.children[0]
+    dropdown = right_menu.children[1]
     trigger_img = dropdown.children[0]
     trigger_label = dropdown.children[1]
     assert "/assets/flags/fr.svg" in trigger_img.src
